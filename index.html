@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 15px; background-color: #f4f7f6; }
+      .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+      #reader { width: 100%; margin: 10px auto; border-radius: 10px; overflow: hidden; }
+      input, select { width: 95%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+      .btn-scan { background: #007bff; color: white; padding: 10px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
+      .btn-save { background: #28a745; color: white; padding: 18px; border: none; width: 100%; font-size: 18px; font-weight: bold; border-radius: 10px; margin-top: 15px; }
+      .label { text-align: left; font-weight: bold; display: block; margin-top: 10px; color: #333; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>🛠️ Registro de Cambio de Bandeja CCTV</h3>
+      
+        <span class="label">Clave de Colaborador (7-9 dígitos):</span>
+        <input type="number" id="tecnico" placeholder="Ej: 1001234" 
+            oninput="if(this.value.length > 9) this.value = this.value.slice(0,9);">
+
+        <span class="label">Número Económico (5 dígitos):</span>
+        <input type="number" id="eco" placeholder="Ej: 58012" 
+            oninput="if(this.value.length > 5) this.value = this.value.slice(0,5);">
+      
+      <div id="reader"></div>
+
+      <span class="label">Bandeja que SUBE:</span>
+      <input type="text" id="bandejaSube" placeholder="Scan QR Entrada" readonly>
+      <button class="btn-scan" onclick="empezarEscaneo('bandejaSube')">📸 Escanear QR Sube</button>
+
+      <span class="label">Bandeja que BAJA:</span>
+      <input type="text" id="bandejaBaja" placeholder="Scan QR Salida" readonly>
+      <button class="btn-scan" onclick="empezarEscaneo('bandejaBaja')">📸 Escanear QR Baja</button>
+
+      <span class="label">¿Se deja el LED de Grabación Activo?</span>
+      <select id="ledStatus">
+        <option value="SI">SÍ - LED Activo</option>
+        <option value="NO">NO - LED Apagado</option>
+        <option value="FALLA">FALLA - Intermitente/Rojo</option>
+      </select>
+
+      <button class="btn-save" onclick="enviar()">💾 Guardar Cambio</button>
+    </div>
+
+    <script>
+      let currentInputId = '';
+      const html5QrCode = new Html5Qrcode("reader");
+
+      function empezarEscaneo(inputId) {
+        currentInputId = inputId;
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        
+        html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+          document.getElementById(currentInputId).value = decodedText;
+          html5QrCode.stop(); // Detiene la cámara al leer
+          alert("Código capturado: " + decodedText);
+        });
+      }
+
+      function enviar() {
+  const tecnico = document.getElementById('tecnico').value;
+  const eco = document.getElementById('eco').value;
+  const bSube = document.getElementById('bandejaSube').value;
+  const bBaja = document.getElementById('bandejaBaja').value;
+
+  // Validación de Técnico (7 a 9 dígitos)
+  if (tecnico.length < 7 || tecnico.length > 9) {
+    alert("❌ Error: La clave de colaborador debe tener entre 7 y 9 dígitos.");
+    return;
+  }
+
+  // Validación de Autobús (Forzosamente 5 dígitos)
+  if (eco.length !== 5) {
+    alert("❌ Error: El número económico del autobús debe ser de exactamente 5 dígitos.");
+    return;
+  }
+
+  // Validación de Escaneos
+  if (!bSube || !bBaja) {
+    alert("❌ Error: Debes escanear AMBAS bandejas (la que sube y la que baja).");
+    return;
+  }
+
+  // Si todo está bien, procedemos al envío
+  const btn = document.querySelector('.btn-save');
+  btn.disabled = true;
+  btn.innerText = "Enviando...";
+
+  const datos = {
+    tecnico: document.getElementById('tecnico').value,
+    eco: document.getElementById('eco').value,
+    bandejaSube: document.getElementById('bandejaSube').value,
+    bandejaBaja: document.getElementById('bandejaBaja').value,
+    ledStatus: document.getElementById('ledStatus').value
+  };
+
+  const urlWebScript = "https://script.google.com/macros/s/AKfycbyqo5MxL2WwZ7jt_i6Ugm9Yy9PHwxxnl0NJr5IFCPk-sjse1A0zBHrzjE0HXJQKsHjH/exec"; 
+        
+  fetch(urlWebScript, {
+    method: 'POST',
+    mode: 'no-cors', // Esto evita problemas de permisos
+    body: JSON.stringify(datos)
+  }).then(() => {
+    alert("✅ Registro guardado correctamente");
+    // Aquí puedes limpiar tus campos como ya lo hacías
+    document.getElementById('eco').value = "";
+    btn.disabled = false;
+    btn.innerText = "💾 Guardar Cambio";
+  }).catch(err => alert("Error: " + err));
+        
+}
+    </script>
+  </body>
+</html>
