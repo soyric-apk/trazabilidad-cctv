@@ -34,7 +34,7 @@
         <small id="subtitulo">Logística de Bandejas</small>
     </div>
 
-    <span class="label">📍 Base Operativa:</span>
+    <span class="label">Base Operativa:</span>
     <select id="base" onchange="cambiarEstiloBase(this.value)">
         <option value="">Selecciona tu base...</option>
         <option value="ATLA">Atlacomulco (ATLA)</option>
@@ -48,10 +48,10 @@
         <option value="TSAT">Saturno (TSAT)</option>
     </select>
 
-    <span class="label">👤 Clave de Colaborador (7-10 dígitos):</span>
+    <span class="label">Clave de Colaborador (7-10 dígitos):</span>
     <input type="number" id="tecnico" placeholder="Ej: 1004567">
 
-    <span class="label">🚌 Económico del Autobús (5 dígitos):</span>
+    <span class="label">Económico del Autobús (5 dígitos):</span>
     <input type="number" id="eco" placeholder="Ej: 58012" oninput="validarContenido()">
 
     <div id="reader"></div>
@@ -76,14 +76,14 @@
     <input type="text" id="bandejaBaja" readonly placeholder="Escanea QR de bajada">
     <button class="btn-scan" onclick="scan('bandejaBaja')">📸 Escanear QR de Bandeja que BAJAS</button>
 
-    <span class="label">💿 ¿Formateo de disco?</span>
+    <span class="label">¿Tuviste que formatear el disco que subiste?</span>
     <select id="formateo" onchange="toggleMotivoForm(this.value)">
         <option value="NO">No se formateó</option>
         <option value="SI">Sí, se formateó</option>
     </select>
     <input type="text" id="motivoFormateo" placeholder="¿Por qué formateaste?" style="display:none; margin-top:8px; border: 1px solid #e67e22;">
 
-    <span class="label">💡 Estatus LED DVR:</span>
+    <span class="label">Estatus LED DVR después del cambio:</span>
     <select id="ledStatus">
         <option value="OK">🟢 OK (Grabando)</option>
         <option value="FALLA">🔴 FALLA (No graba / Rojo)</option>
