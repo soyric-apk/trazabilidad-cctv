@@ -103,28 +103,28 @@
     
       // Paleta de colores corporativa y funcional
       const colors = { 
-          'ATLA': '#8e44ad', // Morado
-          'COLI': '#2980b9', // Azul Brillante
-          'GDLJ': '#2c3e50', // Azul Oscuro (Midnight)
-          'GUZM': '#d35400', // Naranja Quemado
-          'JILO': '#27ae60', // Verde Esmeralda
-          'MORE': '#c0392b', // Rojo Intenso
-          'OFOC': '#16a085', // Verde Turquesa
-          'TOLU': '#7f8c8d', // Gris Concreto
-          'TSAT': '#f1c40f'  // Amarillo (Saturno)
+          'ATLA': '#2980b9', // Morado
+          'COLI': '#27ae60', // Azul Brillante
+          'GDLJ': '#03a9f4', // Azul Oscuro (Midnight)
+          'GUZM': '#fb605d', // Naranja Quemado
+          'JILO': '#c0392b', // Verde Esmeralda
+          'MORE': '#00205b', // Rojo Intenso
+          'OFOC': '#035eae', // Verde Turquesa
+          'TOLU': '#0b3e6e', // Gris Concreto
+          'TSAT': '#3daf4f'  // Amarillo (Saturno)
       };
 
       const color = colors[base] || '#34495e'; // Color por defecto si no hay selección
       banner.style.backgroundColor = color;
     
       // Ajuste de contraste para el color amarillo de Saturno
-      if(base === 'TSAT') {
-          banner.style.color = 'black';
-          subtitulo.style.color = '#333';
-      } else {
-          banner.style.color = 'white';
-          subtitulo.style.color = 'white';
-      }
+      // if(base === 'TSAT') {
+      //    banner.style.color = 'black';
+      //    subtitulo.style.color = '#333';
+      // } else {
+      //   banner.style.color = 'white';
+      //   subtitulo.style.color = 'white';
+      // }
     }
 
     function scan(id) {
